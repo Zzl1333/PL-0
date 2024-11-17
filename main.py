@@ -11,5 +11,6 @@ if __name__ == '__main__':
         if new_line == '' : break
         line += new_line if line == '' else ' ' + new_line
     b.lexical_analysi(line)
-
+print("i love you,hello body")
+print("qqq")
 # 访问 https://www.jetbrains.com/help/pycharm/ 获取 PyCharm 帮助
