@@ -30,6 +30,7 @@ def cal_result():
 
 
 def lexical_analysi(line_a):
+        print("789")
         global line
         line = line_a
         global line_length;"""存放输入字符串的长度"""
