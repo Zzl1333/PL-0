@@ -1,0 +1,24 @@
+须知：！！！
+var 定义变量类型以及数组类型，若想一次性定义多个变量，如var app,aoo 不同变量之间需要使用“,”分隔开
+const 定义常量类型，格式为const arr=12,brr=23 一次行定义多个常量需逗号隔开
+procedure 定义过程说明部分，格式为procedure <标识符> 后面若要继续定义，则要使用逗号隔开，如定义其他类型，则直接输入定义符号转去执行
+
+
+测试用例：
+const a=11,b=12
+var array(1:5)
+var apple,banana
+var brray(1:5)
+var c
+procedure qwe
+procedure que123
+begin read(a) end
+begin if a>b then a:=1 else b:=1 end
+begin a:=1+2+3 end
+begin a:=1+2+3 b:=1-2-3 end
+if a>b then a:=1 else b:=1
+while a>b do a:=1
+call array (a,+b)
+read (a)
+read (a,a(+b))
+write (a,+a,a+b)
