@@ -11,6 +11,10 @@ global combination_use_list
 combination_use_list = list();"""存储过程使用"""
 global combination_use_compound_list
 combination_use_compound_list = list();"""存储复合语句使用"""
+global combination_use_condition_list
+combination_use_condition_list = list();"""存储条件语句使用"""
+global combination_use_for_loop_list
+combination_use_for_loop_list = list();"""存储条件语句使用"""
 global read_tags
 read_tags = 0;"""标记list列表已经读取出多少个标识符"""
 

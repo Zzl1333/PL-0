@@ -29,9 +29,27 @@ def process_description():
 def statement():
     """语句"""
     d.combination_use_list.clear()
-    if d.sym == "begin" : compound_statement()
-    elif d.sym == "if" : conditional_statement()
-    else : assignment_statement()
+    if d.sym == "begin" :
+        compound_statement()
+        return 1
+    elif d.sym == "if" :
+        conditional_statement()
+        return 1
+    elif d.sym == "while" :
+        for_loop_statement()
+        return 1
+    elif d.sym == "call" :
+        procedure_call_statement()
+        return 1
+    elif d.sym == "read" :
+        read_statement()
+        return 1
+    elif d.sym == "write" :
+        write_statement()
+        return 1
+    else :
+        if assignment_statement() == 1:
+            return 1
 
 
 """----------------------------分隔符----------------------------------"""
@@ -41,28 +59,148 @@ def compound_statement():
     d.combination_use_compound_list.clear()
     d.combination_use_compound_list.append(d.sym)
     d.combination_use_compound_list.append(" :")
+    d.combination_use_condition_list.clear()
     getsym()
     while d.sym != "end":
         statement()
-        d.read_pointer -= 1
-        d.read_tags -= 1
+        if len(d.combination_use_list) == 0 :
+            d.combination_use_compound_list.extend(d.combination_use_condition_list)
+        else :
+            d.combination_use_compound_list.extend(d.combination_use_list)
+
         if d.read_tags < len(b.token):
             getsym()
-        d.combination_use_compound_list.extend(d.combination_use_list)
-        d.combination_use_compound_list.append(" ")
     d.combination_use_compound_list.append(" ")
     d.combination_use_compound_list.append(d.sym)
     combination_result = ''.join(d.combination_use_compound_list)
-    d.combination_result_dict[combination_result] = f'这是一个复合语句 ::= begin  end'
+    d.combination_result_dict[combination_result] = f'这是一个复合语句 '
+    return 1
 
 def conditional_statement():
     """条件语句"""
     d.combination_use_list.clear()
     d.combination_use_list.append(d.sym)
-    d.combination_use_list.append(" :")
+    d.combination_use_list.append(" ")
     getsym()
-    if is_condition() == 1:1
+    if is_condition() == 1:
+        getsym()
+        if d.sym == "then" :
+            d.combination_use_list.append(" ")
+            d.combination_use_list.append(d.sym)
+            getsym()
+            d.combination_use_condition_list.extend(d.combination_use_list)
+            d.combination_use_condition_list.append(" ")
+            if statement() == 1:
+                d.combination_use_condition_list.extend(d.combination_use_list)
+                if d.read_tags < len(b.token):
+                    getsym()
+                    if d.sym == "else":
+                        d.combination_use_condition_list.append(" ")
+                        d.combination_use_condition_list.extend(d.sym)
+                        d.combination_use_condition_list.append(" ")
+                        getsym()
+                        if statement() == 1:
+                            d.combination_use_condition_list.extend(d.combination_use_list)
+                            combination_result = ''.join(d.combination_use_condition_list)
+                            d.combination_use_list.clear()
+                            d.combination_result_dict[combination_result] = "这是一个条件语句 ::= if<条件>then<语句>[else<语句>]"
+                    else :
+                        d.read_pointer -= 1
+                        d.read_tags -= 1
+                        return 1
+                else :
+                    combination_result = ''.join(d.combination_use_condition_list)
+                    d.combination_result_dict[combination_result] = "这是一个条件语句 ::= if<条件>then<语句>"
 
+def for_loop_statement():
+    """当型循环语句"""
+    d.combination_use_list.clear()
+    d.combination_use_list.append(d.sym)
+    d.combination_use_list.append(" ")
+    getsym()
+    if is_condition() == 1:
+        getsym()
+        if d.sym == "do" :
+            d.combination_use_list.append(" ")
+            d.combination_use_list.append(d.sym)
+            d.combination_use_list.append(" ")
+            getsym()
+            d.combination_use_for_loop_list.extend(d.combination_use_list)
+            if statement() == 1:
+                d.combination_use_for_loop_list.extend(d.combination_use_list)
+                combination_result = ''.join(d.combination_use_for_loop_list)
+                d.combination_result_dict[combination_result] = "这是一个当型循环语句 ::= while <条件> do <语句>"
+
+def procedure_call_statement():
+    """过程调用语句"""
+    d.combination_use_list.clear()
+    d.combination_use_list.append(d.sym)
+    d.combination_use_list.append(" ")
+    getsym()
+    if is_letter_number(d.sym):
+        d.combination_use_list.append(d.sym)
+        getsym()
+        if d.sym == "(":
+            d.combination_use_list.append(d.sym)
+            getsym()
+            if pass_by_value() == 1:
+                getsym()
+                while d.sym != ")":
+                    if d.sym == ",":
+                        d.combination_use_list.append(d.sym)
+                        getsym()
+                        if pass_by_value() == 1:
+                            getsym()
+                d.combination_use_list.append(d.sym)
+                combination_result = ''.join(d.combination_use_list)
+                d.combination_result_dict[combination_result] = "这是一个过程调用语句 ::= call <标识符> [(<传值参数>{，<传值参数>})]"
+                return 1
+        else:return 1
+    else:return 0
+
+def read_statement():
+    """读语句"""
+    d.combination_use_list.clear()
+    d.combination_use_list.append(d.sym)
+    d.combination_use_list.append(" ")
+    getsym()
+    if d.sym == "(":
+        d.combination_use_list.append(d.sym)
+        getsym()
+        if is_variables() == 1 :
+            getsym()
+            while d.sym != ")":
+                if d.sym == ",":
+                    d.combination_use_list.append(d.sym)
+                    getsym()
+                    if is_variables() == 1:
+                        getsym()
+            d.combination_use_list.append(d.sym)
+            combination_result = ''.join(d.combination_use_list)
+            d.combination_result_dict[combination_result] = "这是一个读语句 ::= read (<变量引用>{,<变量引用>})"
+            return 1
+
+def write_statement():
+    """写语句"""
+    d.combination_use_list.clear()
+    d.combination_use_list.append(d.sym)
+    d.combination_use_list.append(" ")
+    getsym()
+    if d.sym == "(":
+        d.combination_use_list.append(d.sym)
+        getsym()
+        if is_expression() == 1:
+            getsym()
+            while d.sym != ")":
+                if d.sym == ",":
+                    d.combination_use_list.append(d.sym)
+                    getsym()
+                    if is_expression() == 1:
+                        getsym()
+            d.combination_use_list.append(d.sym)
+            combination_result = ''.join(d.combination_use_list)
+            d.combination_result_dict[combination_result] = "这是一个写语句 ::= write (<表达式>{,<表达式>})"
+            return 1
 
 def assignment_statement():
     """赋值语句"""
@@ -74,6 +212,7 @@ def assignment_statement():
             if is_expression() == 1:
                 combination_result = ''.join(d.combination_use_list)
                 d.combination_result_dict[combination_result] = "这是一个赋值语句 ::= <变量引用>:=<表达式>"
+                return 1
 
 
 
@@ -111,7 +250,7 @@ def quantity_definition():
         if d.read_tags < len(b.token) :
             getsym()
             constant = d.sym
-            if constant == "[":
+            if constant == "(":
                 """这是一个数组"""
                 d.combination_use_list.append(constant)
                 getsym()
@@ -128,30 +267,36 @@ def quantity_definition():
                             d.combination_use_list.append(constant)
                             getsym()
                             constant = d.sym
-                            if constant == "]":
+                            if constant == ")":
                                 d.combination_use_list.append(constant)
+                                getsym()
                                 global combination_result
                                 combination_result = ''.join(d.combination_use_list)
-                                d.combination_result_dict[combination_result] = "这是一个var <变量声明>::= <标识符>[<数组界>:<数组界>]"
+                                d.combination_result_dict[combination_result] = "这是一个var <变量声明>::= <标识符>(<数组界>:<数组界>)"
             else :
                 """这只是一个变量，后续继续输入"""
                 combination_result = ''.join(d.combination_use_list)
-                d.combination_result_dict[combination_result] = "这是一个var <变量声明>::= <标识符>"
+                d.combination_result_dict[combination_result] = "这是一个var <变量声明>"
         else :
             """这只是一个变量，后续无输入，仅定义一个变量,即<变量>::=<标识符>"""
             combination_result = ''.join(d.combination_use_list)
-            d.combination_result_dict[combination_result] = "这是一个var <变量声明>::= <标识符>"
+            d.combination_result_dict[combination_result] = "这是一个var <变量声明>"
     if d.read_tags < len(b.token):
         if d.sym == "," : quantity_description()
         elif d.sym == "const" :constant_definition()
         elif d.sym == "var" :quantity_description()
         elif d.sym == " " : return 0
+        else :
+            d.read_pointer -= 1
+            d.read_tags -= 1
+            return 1
 
 
 
 def array_bound(constant):
     """数组界"""
     if identifier(constant) == 1: return 1
+    elif is_number(constant) == 1: return 1
     else : return 0
 
 
@@ -184,7 +329,10 @@ def constant_definition():
             constant_definition()
         elif d.sym == "var" :
             quantity_definition()
-        else : return 0
+        else :
+            d.read_pointer -= 1
+            d.read_tags -= 1
+            return 1
 
 
 def identifier(constant):
@@ -228,7 +376,19 @@ def is_number(unsigned_number):
 
 def is_condition():
     """判断条件"""
-    if is_expression() == 1 :1
+    if is_expression() == 1 :
+        getsym()
+        if relational_operators(d.sym) == 1:
+            getsym()
+            if is_expression() == 1:
+                return 1
+    elif d.sym == "odd" :
+        d.combination_use_list.append(d.sym)
+        getsym()
+        if is_expression() == 1:
+            d.combination_use_list.append(d.sym)
+            return 1
+    else : return 0
 
 def is_expression():
     """判断表达式"""
@@ -236,13 +396,17 @@ def is_expression():
         d.combination_use_list.append(d.sym)
         getsym()
     if is_term() == 1:
-        getsym()
-        while d.sym == "+" or d.sym == "-":
-            d.combination_use_list.append(d.sym)
+        if d.read_tags < len(b.token):
             getsym()
-            if is_term() == 1:
-                if d.read_tags < len(b.token):
-                    getsym()
+            while d.sym == "+" or d.sym == "-":
+                d.combination_use_list.append(d.sym)
+                getsym()
+                if is_term() == 1:
+                    if d.read_tags < len(b.token):
+                        getsym()
+            d.read_pointer -= 1
+            d.read_tags -= 1
+            return 1
         return 1
     else : return 0
 
@@ -302,4 +466,15 @@ def is_variables():
                 return 1
     else : return 0
 
+def relational_operators(code):
+    """关系运算符"""
+    if code in ["==","#","<","<=",">",">="]:
+        d.combination_use_list.append(d.sym)
+        return 1
+    else : return 0
 
+def pass_by_value():
+    """传值参数"""
+    if is_expression() == 1:
+        return 1
+    else :return 0
