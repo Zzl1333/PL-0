@@ -10,8 +10,7 @@ var array(1:5)
 var apple,banana
 var brray(1:5)
 var c
-procedure qwe
-procedure que123
+procedure array array:=1;brraay brraay:=1
 begin read(a) end
 begin if a>b then a:=1 else b:=1 end
 begin a:=1+2+3 end

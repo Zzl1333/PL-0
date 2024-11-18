@@ -44,8 +44,7 @@ def lexical_analysi(line_a):
         print(f'词法分析后的列表list为: {token}')
         while d.read_tags < len(token):
             d.Grammar_analysi()
-        print(f'语法分析后的字典dict为: {d.combination_result_dict}')
-
+        print(f'\n语法分析后的字典dict为: {d.combination_result_dict}\n')
         print(f"语法分析后得到的元素有： {d.combination_result_dict.keys()}")
 
 

@@ -235,6 +235,15 @@ def process_definition():
             if d.sym == "," : process_definition()
             else :
                 part_program()
+                if d.read_tags < len(b.token):
+                    getsym()
+                    while d.sym == ";" :
+                        process_definition()
+                        getsym()
+                    d.read_pointer -= 1
+                    d.read_tags -= 1
+                    return 1
+
 
 """----------------------------分隔符----------------------------------"""
 """变量说明部分"""
@@ -478,3 +487,6 @@ def pass_by_value():
     if is_expression() == 1:
         return 1
     else :return 0
+
+def error_calculate():
+    """处理出错"""
