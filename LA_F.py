@@ -62,7 +62,7 @@ def array_save():
     """记录数组的完整表示"""
     array_record = ""
 
-    while b.now_char != "[":
+    while b.now_char != "(":
         """数组名部分"""
         catToken()
         array_record = array_record + b.now_char
@@ -72,7 +72,7 @@ def array_save():
     b.token.append(now_result)
     b.result.clear()
 
-    if b.now_char == "[":
+    if b.now_char == "(":
         catToken()
         array_record = array_record + b.now_char
         getchar()
@@ -96,7 +96,7 @@ def array_save():
         b.token.append(now_result)
         b.result.clear()
 
-        while b.now_char != "]":
+        while b.now_char != ")":
             catToken()
             array_record = array_record + b.now_char
             getchar()
@@ -104,7 +104,7 @@ def array_save():
         b.token.append(now_result)
         b.result.clear()
 
-        if b.now_char == "]":
+        if b.now_char == ")":
             catToken()
             array_record = array_record + b.now_char
         now_result = ''.join(b.result)
