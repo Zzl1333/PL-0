@@ -3,14 +3,20 @@ var array(1:5)
 var apple,banana
 var brray(1:5)
 var c
-procedure array array:=1;brraay brraay:=1
-begin read(a) end
+procedure p
+if a>b then a:=1 else b:=1
+if a>b then a:=b+c+d+e+f+g+h else b:=c+d+e+f+g+h
+if a>b then  begin a:=1 end else begin b:=1 end
 begin if a>b then a:=1 else b:=1 end
 begin a:=1+2+3 end
 begin a:=1+2+3 b:=1-2-3 end
-if a>b then a:=1 else b:=1
-while a>b do a:=1
-call array (a,+b)
+if a>b then a:=b+c*e+f*g else a:=b+c/e+f/g
+call ar
+call array(a,+b)
 read (a)
-read (a,a(+b))
-write (a,+a,a+b)
+begin read(a,b) end
+read (a,b,c)
+while a>b do a:=1
+write(2*2*2*2*c)
+write (a,a+b,a+b+c)
+write (a+b+c)

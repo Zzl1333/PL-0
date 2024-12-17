@@ -111,7 +111,6 @@ def array_save():
         b.token.append(now_result)
         b.result.clear()
         b.symbol = "ARRAY 数组"
-        if b.symbol == "ARRAY 数组": print(f'{array_record} and {b.symbol}')
         if b.number < b.line_length:
             getchar()
             if b.now_char == ",":
@@ -253,11 +252,14 @@ def go_isDivi():
                     now_result = ''.join(b.result)
                     return 0
             if b.now_char == "NULL":break
-    p = 0
-    while p < step_number :
+        p = 0
+        while p < step_number:
+            retract()
+            del b.result[step_number - p]
+            p += 1
+    else :
         retract()
-        del b.result[step_number - p]
-        p += 1
+
     now_result = ''.join(b.result)
     b.token.append(now_result)
     b.symbol = "DIVISY 斜竖"

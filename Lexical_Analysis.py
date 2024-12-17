@@ -18,6 +18,7 @@ symbol = ""
 global error_detect
 error_detect = 0
 
+
 def cal_result():
     global symbol
     symbol = ""
@@ -42,10 +43,23 @@ def lexical_analysi(line_a):
             else :
                 print(f'error : “ {c.now_result} ” “输入的字符无法识别”')
         print(f'词法分析后的列表list为: {token}')
+
+
         while d.read_tags < len(token):
             d.Grammar_analysi()
-        print(f'\n语法分析后的字典dict为: {d.combination_result_dict}\n')
-        print(f"语法分析后得到的元素有： {d.combination_result_dict.keys()}")
+        """print(f'\n语法分析后的字典dict为: {d.combination_result_dict}\n')"""
+        print(f"语法分析后得到的元素有： {d.combination_result_dict.keys()}",end='\n')
 
+
+        print("符号表为：")
+        for i in d.symbol_table:
+            for j in i :
+                if j is not None:
+                    print(j,end=" ")
+                    continue
+            print(end='\n')
+        print("中间代码为：")
+        for i in d.intermediate_code_result.keys():
+            print(f"{i} {d.intermediate_code_result[i]}")
 
 
