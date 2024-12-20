@@ -49,10 +49,6 @@ def go_isLetter():
         array_save()
 
 
-
-
-"""var array[1:5]"""
-"""var array"""
 def array_save():
     b.symbol = "VAR"
     b.result.clear()

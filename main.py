@@ -22,7 +22,7 @@ if __name__ == '__main__':
         line += new_line if line == '' else ' ' + new_line
 
     b.lexical_analysi(line)
-    print("\n是否将符号表和中间代码的结果写入PL0_read文件中？ ")
+    """print("\n是否将符号表和中间代码的结果写入PL0_read文件中？ ")
     message = input("请输入 yes or no :")
     while message != "yes" and message != "no" :
         message = input("输入错误，请重新输入:\n")
@@ -33,5 +33,5 @@ if __name__ == '__main__':
         e.write(str_message)
         str_message=str(d.intermediate_code_result)
         e.write(str_message)
-        print("写入完成,已将文本文件覆盖")
+        print("写入完成,已将文本文件覆盖")"""
 

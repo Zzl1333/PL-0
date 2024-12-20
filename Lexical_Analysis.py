@@ -1,6 +1,7 @@
 import main as a
 import LA_F as c
 import Grammar_Analysis as d
+import Intent_code_generation as e
 global number
 number = 0
 global my_list
@@ -61,5 +62,7 @@ def lexical_analysi(line_a):
         print("中间代码为：")
         for i in d.intermediate_code_result.keys():
             print(f"{i} {d.intermediate_code_result[i]}")
+
+"""        e.clucute()"""
 
 
